@@ -1,0 +1,12 @@
+---
+
+name: CI (Main branch)
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  release:
+    uses: naviteq/github-actions/.github/workflows/create-release.yaml@main
+    secrets: inherit

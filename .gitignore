@@ -23,3 +23,7 @@ go.work.sum
 
 # env file
 .env
+
+# Local binaries
+curl-plugin
+test/test-client

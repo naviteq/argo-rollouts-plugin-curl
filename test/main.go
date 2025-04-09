@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"time"
 
 	"net/rpc"
@@ -29,11 +31,24 @@ var pluginMap = map[string]plugin.Plugin{
 }
 
 func main() {
+	// Build the plugin binary
+	cmd := exec.Command("go", "build", "-o", "curl-plugin", "..")
+	cmd.Dir = "test"
+	if err := cmd.Run(); err != nil {
+		log.Fatalf("Failed to build plugin: %v", err)
+	}
+
+	// Get the absolute path to the plugin binary
+	pluginPath, err := filepath.Abs("curl-plugin")
+	if err != nil {
+		log.Fatalf("Failed to get absolute path: %v", err)
+	}
+
 	// Create a new plugin client
 	client := plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: handshakeConfig,
 		Plugins:         pluginMap,
-		Cmd:             exec.Command("../curl-plugin"),
+		Cmd:             exec.Command(pluginPath),
 		AllowedProtocols: []plugin.Protocol{
 			plugin.ProtocolGRPC,
 			plugin.ProtocolNetRPC,
@@ -90,6 +105,11 @@ func main() {
 	// Print the result
 	fmt.Printf("Success: %v\n", output.Success)
 	fmt.Printf("Message: %s\n", output.Message)
+
+	// Clean up the plugin binary
+	if err := os.Remove(pluginPath); err != nil {
+		log.Printf("Warning: Failed to remove plugin binary: %v", err)
+	}
 }
 
 // ---- Input / Output Structs ----

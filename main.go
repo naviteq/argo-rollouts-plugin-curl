@@ -111,7 +111,11 @@ type RPCServer struct {
 }
 
 func (m *RPCServer) Run(rawInput json.RawMessage, resp *json.RawMessage) error {
-	*resp, _ = m.Impl.Run(context.Background(), rawInput)
+	result, err := m.Impl.Run(context.Background(), rawInput)
+	if err != nil {
+		return err
+	}
+	*resp = result
 	return nil
 }
 

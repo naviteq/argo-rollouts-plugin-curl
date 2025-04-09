@@ -1,0 +1,11 @@
+---
+archives:
+  - format: binary
+builds:
+  - goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm
+      - arm64

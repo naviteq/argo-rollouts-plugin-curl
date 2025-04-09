@@ -1,6 +1,6 @@
 ---
 archives:
-  - format: binary
+  - formats: ["binary"]
 builds:
   - goos:
       - darwin

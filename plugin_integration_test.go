@@ -43,7 +43,7 @@ func TestPluginExecution(t *testing.T) {
 			name: "successful http request",
 			input: PluginInput{
 				Config: map[string]string{
-					"uri":    "https://httpbin.org/get",
+					"uri":    "https://ifconfig.me",
 					"method": "GET",
 				},
 			},
@@ -224,7 +224,7 @@ func TestArgoRolloutsEnvironment(t *testing.T) {
 	// Test a simple request
 	input := PluginInput{
 		Config: map[string]string{
-			"uri":    "https://httpbin.org/get",
+			"uri":    "https://ifconfig.me",
 			"method": "GET",
 		},
 	}

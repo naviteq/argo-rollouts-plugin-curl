@@ -69,7 +69,7 @@ func TestPluginIntegration(t *testing.T) {
 			name: "valid request",
 			input: PluginInput{
 				Config: map[string]string{
-					"uri":    "https://httpbin.org/get",
+					"uri":    "https://ifconfig.me",
 					"method": "GET",
 				},
 			},

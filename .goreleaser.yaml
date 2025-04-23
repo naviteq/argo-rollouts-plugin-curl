@@ -2,10 +2,15 @@
 archives:
   - formats: ["binary"]
 builds:
-  - goos:
+  - env:
+      - CGO_ENABLED=0
+    goos:
       - darwin
       - linux
     goarch:
       - amd64
       - arm
       - arm64
+    ldflags:
+      - -s -w
+    main: .

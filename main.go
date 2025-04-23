@@ -12,6 +12,7 @@ import (
 
 	"net/rpc"
 
+	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
 )
 
@@ -121,12 +122,23 @@ func (m *RPCServer) Run(rawInput json.RawMessage, resp *json.RawMessage) error {
 
 // ---- Main Entrypoint ----
 func main() {
+	// Set up logging to stderr with timestamps
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.SetOutput(os.Stderr)
 
+	// Log startup information
+	log.Printf("Starting plugin with handshake config: %+v", handshake)
+
+	// Create plugin server
 	plugin.Serve(&plugin.ServeConfig{
 		HandshakeConfig: handshake,
 		Plugins: map[string]plugin.Plugin{
 			"step": &HTTPStepPlugin{Impl: &HTTPPlugin{}},
 		},
+		Logger: hclog.New(&hclog.LoggerOptions{
+			Name:   "plugin",
+			Output: os.Stderr,
+			Level:  hclog.Debug,
+		}),
 	})
 }

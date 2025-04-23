@@ -12,4 +12,7 @@ builds:
       - arm64
     ldflags:
       - -s -w
+      - -extldflags "-static"
+    tags:
+      - netgo
     main: .
